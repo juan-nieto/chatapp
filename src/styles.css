@@ -1,0 +1,24 @@
+.message-form-container {
+    align-items: center;
+    display: flexbox;
+    height: 100vh;
+}
+
+.message-form-input {
+    background-color: slategray !important;
+    color: white !important;
+}
+
+.message-form-input::placeholder {
+    color: lightgray !important;
+}
+
+.message-form-form {
+    position: absolute;
+    bottom: 0;
+    width: -webkit-fill-available;
+    max-width: 960px;
+    left: 10px;
+    display: inline-flex;
+}
+
