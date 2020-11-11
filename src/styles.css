@@ -1,12 +1,23 @@
+#chat-container {
+    background-color: darkgray;
+    width: -webkit-fill-available;
+    max-width: 960px;
+    height: 100vh;
+    position: relative;
+}
+
 .message-form-container {
     align-items: center;
     display: flexbox;
-    height: 100vh;
+    
 }
 
 .message-form-input {
     background-color: slategray !important;
     color: white !important;
+    width: 100%;
+    border-radius: .25rem;
+    margin-right: 5px;
 }
 
 .message-form-input::placeholder {
@@ -14,11 +25,9 @@
 }
 
 .message-form-form {
-    position: absolute;
-    bottom: 0;
-    width: -webkit-fill-available;
-    max-width: 960px;
-    left: 10px;
+    width: 90%;
     display: inline-flex;
+    position: absolute;
+    bottom: 5px;
 }
 

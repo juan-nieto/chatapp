@@ -1,6 +1,7 @@
 import React from 'react';
 import socketClient  from "socket.io-client";
 import MessageForm from './MessageForm';
+import {Container} from 'react-bootstrap';
 
 const SERVER = "http://localhost:3000";
 
@@ -27,8 +28,10 @@ class App extends React.Component {
 
 
   displayMessage = (message) => {
-    console.log("Displaying message received: " +  message.messageVal);
-    this.setState({ message: message.messageVal });
+    console.log("Displaying message received: " +  message.message.messageVal
+     + " with timestamp: " + message.d);
+    let timestampedMessage = message.d + ": " + message.message.messageVal;
+    this.setState({ message: timestampedMessage });
   }
 
   handleMessageSend = (username, messageVal) => {
@@ -39,10 +42,10 @@ class App extends React.Component {
   render() {
     let message = this.state.message;
     return (
-      <div>
-      {message}
-      <MessageForm onMessageSend={this.handleMessageSend}/>
-      </div>
+      <Container id="chat-container">
+        {message}
+        <MessageForm onMessageSend={this.handleMessageSend}/>
+      </Container>
     );
   }
 } export default App;
