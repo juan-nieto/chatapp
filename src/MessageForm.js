@@ -1,16 +1,29 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {Container, Form, Button} from 'react-bootstrap';
 import './styles.css'
 
 class MessageForm extends React.Component {
+    state = { enteredMessage: '' }
+
+    handleInput = e => {
+        this.setState({ enteredMessage: e.target.value });
+    }
+
+    handleSendMessage = () => {
+        if (this.state.enteredMessage && this.state.enteredMessage != '') {
+            this.props.onMessageSend("id", this.state.enteredMessage);
+            this.setState({ enteredMessage: '' });
+        }
+    }
 
     render() {
         return (
             <Container className="message-form-container">
-                <Form className="message-form-form">
-                   <Form.Control type="text" className="message-form-input" placeholder="Enter message to send"></Form.Control> 
-                   <Button type="submit">Send</Button>
-                </Form>
+                <div className="message-form-form">
+                   <input type="text" className="message-form-input" placeholder="Enter message to send"
+                        onChange={this.handleInput} value={this.state.enteredMessage}/> 
+                   <Button onClick={this.handleSendMessage}>Send</Button>
+                </div>
             </Container>
         );
     }
