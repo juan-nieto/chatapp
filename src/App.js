@@ -36,13 +36,12 @@ class App extends React.Component {
   displayMessage = (message) => {
     console.log("Displaying message received: " +  message.message.messageVal
      + " with timestamp: " + message.d);
-     let timestamp = message.d.split(' ').join('');
+    let timestamp = message.d.split(' ').join('');
     let messageObj = {
       time: timestamp,
       username: message.message.user,
       text: message.message.messageVal
     } 
-    //let completeMessage = message.d + " " + message.message.user + ": " + message.message.messageVal;
 
     this.setState(state => { 
       const messages = state.messages.concat(messageObj);
@@ -63,11 +62,11 @@ class App extends React.Component {
     let user = this.state.socketId;
     return (
       <Container id="chat-container">
-        <span> Your username is: {user}</span>
+        <h6> Your username is: {user}</h6>
         {messages.map(message => (
-          <Message timestamp={message.time}
-            username={message.username}
-            text={message.text}/>
+          (message.username === user)
+          ? <b> <Message timestamp={message.time} username={message.username} text={message.text}/> </b>
+          : <Message timestamp={message.time} username={message.username} text={message.text}/>        
         ))}
         <MessageForm onMessageSend={this.handleMessageSend}/>
       </Container>
