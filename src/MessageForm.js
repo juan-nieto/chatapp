@@ -21,14 +21,12 @@ class MessageForm extends React.Component {
     }
 
     render() {
-        return (
-            <Container className="message-form-container">
+        return (       
                 <div className="message-form-form">
                    <input type="text" className="message-form-input" placeholder="Enter message to send"
                         onChange={this.handleInput} value={this.state.enteredMessage}/> 
-                   <Button onClick={this.handleSendMessage}>Send</Button>
+                   <Button onClick={this.handleSendMessage} className="message-form-button">Send</Button>
                 </div>
-            </Container>
         );
     }
 

@@ -4,18 +4,31 @@
     max-width: 960px;
     height: 100vh;
     position: relative;
+    display: flex;
+    padding: 0;
 }
 
 .message-form-container {
     align-items: center;
     display: flexbox;
-    
+}
+
+#messages-container {
+    width: 70%;
+    max-width: 70%;
+    padding: 15px 10px;
+}
+
+#active-users-container {
+    background-color: lightgray;
+    width: 30%;
+    padding: 15px 10px;
 }
 
 .message-form-input {
     background-color: slategray !important;
     color: white !important;
-    width: 100%;
+    width: 90%;
     border-radius: .25rem;
     margin-right: 5px;
 }
@@ -24,14 +37,23 @@
     color: lightgray !important;
 }
 
+.message-form-button {
+    width:10%;
+}
+
 .message-form-form {
-    width: 90%;
-    display: inline-flex;
+    width: 100%;
+    display: flex;
     position: absolute;
     bottom: 5px;
+    max-width: inherit;
 }
 
 .message-span {
     margin-right: 3px;
+}
+
+.message {
+    overflow-wrap: break-word;
 }
 
