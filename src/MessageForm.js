@@ -1,7 +1,11 @@
 import React from 'react';
-import {Container, Form, Button} from 'react-bootstrap';
+import {Container, Button} from 'react-bootstrap';
 import './styles.css'
 
+/**
+ * This class contains the logic and UI to retrieve the message input
+ * the user would like to send, and delivers it to App.js to send to the server.
+ */
 class MessageForm extends React.Component {
     state = { enteredMessage: '' }
 
@@ -11,7 +15,7 @@ class MessageForm extends React.Component {
 
     handleSendMessage = () => {
         if (this.state.enteredMessage && this.state.enteredMessage != '') {
-            this.props.onMessageSend("id", this.state.enteredMessage);
+            this.props.onMessageSend(this.state.enteredMessage);
             this.setState({ enteredMessage: '' });
         }
     }
