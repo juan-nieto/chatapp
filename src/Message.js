@@ -6,8 +6,9 @@ class Message extends React.Component {
         return (
             <div className='message'>
                 <div>
-                    {this.props.senderName}: 
-                    <span>{this.props.text}</span>
+                    <span className="message-span">{this.props.timestamp}</span>
+                    <span className="message-span">{this.props.username}:</span> 
+                    <span className="message-span">{this.props.text}</span>
                 </div>
             </div>
         )
