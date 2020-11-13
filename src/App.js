@@ -11,7 +11,8 @@ class App extends React.Component {
     socket: null,
     messages: [],
     currentUsers: [],
-    socketId: ''
+    socketId: '',
+    username: ''
   }
   socket;
   socketId;
@@ -24,15 +25,15 @@ class App extends React.Component {
     var socket = socketClient (SERVER);
     socket.on('connection', () => {
       console.log("I'm connected with the back-end");
-      socket.emit('first-connection', "test");
       let id = socket.id;
       this.setState({socketId: id});
     });
     this.socket = socket;
     socket.on('message', this.displayMessage);
     socket.on('connected-clients', this.retrieveConnectedClients);
+    socket.on('username-change-fail', this.handleFailedNameChange);
+    socket.on('username-change-success', this.handleSuccessNameChange)
   };
-
 
   displayMessage = (message) => {
     console.log("Displaying message received: " +  message.message.messageVal
@@ -60,34 +61,54 @@ class App extends React.Component {
     this.setState({currentUsers: clientList});
   }
 
-  handleMessageSend = (messageVal) => {
-    console.log("Attempting to send message: " + messageVal);
+  handleMessageSend = (messageVal, changeUsernameFlag) => {
     let user = this.socket.id;
-    this.socket.emit('send-message', {messageVal, user});
+    if(changeUsernameFlag) {
+      console.log("Attempting to change username to: " + messageVal);
+      this.socket.emit('username-change-request', {messageVal, user});
+    } else {
+      console.log("Attempting to send message: " + messageVal);
+      this.socket.emit('send-message', {messageVal, user});
+    }
+  }
+
+  handleFailedNameChange = () => {
+    alert("Could not update username");
+  }
+
+  handleSuccessNameChange = (name) => {
+    this.setState({username: name});
   }
 
   render() {
     let messages = this.state.messages;
-    let user = this.state.socketId;
+    let user = "";
+    let username = this.state.username;
+    if(username === "") {
+      user += this.state.socketId;
+    } else {
+      user += username;
+    }
+    let sockId = this.state.socketId;
     let activeUsers = this.state.currentUsers;
     return (
       <Container id="chat-container"> 
         <div id="messages-container">
           <h6> Your username is: {user}</h6>
           {messages.map(message => (
-            (message.username === user)
+            (message.username === sockId || message.username === sockId)
             ? <b> <Message timestamp={message.time} username={message.username} text={message.text}/> </b>
             : <Message timestamp={message.time} username={message.username} text={message.text}/>        
           ))}
           <MessageForm onMessageSend={this.handleMessageSend}/>
         </div>
         <div id="active-users-container">
-        <h6> Online users: </h6>
-          {activeUsers.map(client => (
-            <div>
-            <b>{client}</b><br/>
-            </div>
-          ))}
+          <h6> Online users: </h6>
+            {activeUsers.map(client => (
+              (client.name === '') 
+              ? <div>{client.id}<br/></div>
+              : <div>{client.name}<br/></div>
+            ))}
         </div>     
       </Container>
     );

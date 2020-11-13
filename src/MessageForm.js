@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Button} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import './styles.css'
 
 /**
@@ -15,7 +15,24 @@ class MessageForm extends React.Component {
 
     handleSendMessage = () => {
         if (this.state.enteredMessage && this.state.enteredMessage != '') {
-            this.props.onMessageSend(this.state.enteredMessage);
+            let attemptedNameChange = false;
+            let desiredUsername = '';
+            let input = this.state.enteredMessage.trim();
+            if(input.startsWith("/name <")) {
+                if(input.endsWith(">")) {
+                    console.log("attempting to change username");
+                    attemptedNameChange = true;
+                    desiredUsername += input.substring(
+                        (input.indexOf("<") + 1),
+                        (input.indexOf(">"))
+                    );
+                }
+            }
+            if(attemptedNameChange) {
+                this.props.onMessageSend(desiredUsername, attemptedNameChange);
+            } else {
+                this.props.onMessageSend(this.state.enteredMessage, attemptedNameChange);
+            }
             this.setState({ enteredMessage: '' });
         }
     }
