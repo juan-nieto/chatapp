@@ -37,11 +37,17 @@ class MessageForm extends React.Component {
         }
     }
 
+    handleEnterPress = (event) => {
+        if(event.keyCode === 13) {
+            this.handleSendMessage();
+        }
+    }
+
     render() {
         return (       
                 <div className="message-form-form">
                    <input type="text" className="message-form-input" placeholder="Enter message to send"
-                        onChange={this.handleInput} value={this.state.enteredMessage}/> 
+                        onChange={this.handleInput} value={this.state.enteredMessage} onKeyDown={this.handleEnterPress}/> 
                    <Button onClick={this.handleSendMessage} className="message-form-button">Send</Button>
                 </div>
         );
