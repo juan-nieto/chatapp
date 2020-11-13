@@ -16,7 +16,7 @@
 #messages-container {
     width: 70%;
     max-width: 70%;
-    padding: 15px 10px;
+    padding-top: 15px;
 }
 
 #active-users-container {
@@ -28,7 +28,7 @@
 .message-form-input {
     background-color: slategray !important;
     color: white !important;
-    width: 90%;
+    width: 85%;
     border-radius: .25rem;
     margin-right: 5px;
 }
@@ -47,6 +47,7 @@
     position: absolute;
     bottom: 5px;
     max-width: inherit;
+    margin-left: 10px
 }
 
 .message-span {

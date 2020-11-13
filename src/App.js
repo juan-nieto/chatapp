@@ -25,7 +25,6 @@ class App extends React.Component {
     var socket = socketClient (SERVER);
     socket.on('connection', () => {
       console.log("I'm connected with the back-end");
-      socket.emit('first-connection', "test");
       let id = socket.id;
       this.setState({socketId: id});
     });
@@ -104,12 +103,12 @@ class App extends React.Component {
           <MessageForm onMessageSend={this.handleMessageSend}/>
         </div>
         <div id="active-users-container">
-        <h6> Online users: </h6>
-          {activeUsers.map(client => (
-            (client.name === '') 
-            ? <div><b>{client.id}</b><br/></div>
-            : <div><b>{client.name}</b><br/></div>
-          ))}
+          <h6> Online users: </h6>
+            {activeUsers.map(client => (
+              (client.name === '') 
+              ? <div>{client.id}<br/></div>
+              : <div>{client.name}<br/></div>
+            ))}
         </div>     
       </Container>
     );
