@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import socketClient  from "socket.io-client";
 import MessageForm from './MessageForm';
-import {Container} from 'react-bootstrap';
+import {Container, ListGroup, ListGroupItem} from 'react-bootstrap';
 import Message from './Message';
 
 const SERVER = "http://localhost:3000";
 
 class App extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.messagesEndRef = React.createRef();
+  }
   state = {
     socket: null,
     messages: [],
@@ -14,11 +19,24 @@ class App extends React.Component {
     socketId: '',
     username: ''
   }
+  
   socket;
   socketId;
 
   componentDidMount() {
     this.setupSocket();
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    console.log("scrolling");
+    
+      this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      console.log("scrolling");
   }
   
   setupSocket = () => {
@@ -94,12 +112,15 @@ class App extends React.Component {
     return (
       <Container id="chat-container"> 
         <div id="messages-container">
-          <h6> Your username is: {user}</h6>
-          {messages.map(message => (
-            (message.username === sockId || message.username === sockId)
-            ? <b> <Message timestamp={message.time} username={message.username} text={message.text}/> </b>
-            : <Message timestamp={message.time} username={message.username} text={message.text}/>        
-          ))}
+          <h6 id="display-username"> Your username is: {user}</h6>
+          <ListGroup>
+            {messages.map(message => (
+              (message.username === sockId || message.username === sockId)
+              ? <ListGroupItem><b> <Message timestamp={message.time} username={message.username} text={message.text}/> </b> </ListGroupItem>
+              : <ListGroupItem><Message timestamp={message.time} username={message.username} text={message.text}/> </ListGroupItem>        
+            ))}
+            <div ref={this.messagesEndRef}/>
+          </ListGroup>
           <MessageForm onMessageSend={this.handleMessageSend}/>
         </div>
         <div id="active-users-container">
