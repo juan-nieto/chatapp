@@ -130,7 +130,7 @@ class App extends React.Component {
             {messages.map(message => (
               (message.username === sockId || message.username === sockId)
               ? <ListGroupItem><b> <Message color={colorStyle} timestamp={message.time} username={message.username} text={message.text}/> </b> </ListGroupItem>
-              : <ListGroupItem><Message color={colorStyle} timestamp={message.time} username={message.username} text={message.text}/> </ListGroupItem>        
+              : <ListGroupItem><Message timestamp={message.time} username={message.username} text={message.text}/> </ListGroupItem>        
             ))}
             <div ref={this.messagesEndRef}/>
           </ListGroup>
