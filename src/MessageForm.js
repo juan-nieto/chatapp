@@ -13,26 +13,48 @@ class MessageForm extends React.Component {
         this.setState({ enteredMessage: e.target.value });
     }
 
-    handleSendMessage = () => {
-        if (this.state.enteredMessage && this.state.enteredMessage != '') {
-            let attemptedNameChange = false;
-            let desiredUsername = '';
-            let input = this.state.enteredMessage.trim();
-            if(input.startsWith("/name <")) {
-                if(input.endsWith(">")) {
-                    console.log("attempting to change username");
-                    attemptedNameChange = true;
-                    desiredUsername += input.substring(
-                        (input.indexOf("<") + 1),
-                        (input.indexOf(">"))
-                    );
+    checkForCommand = (input) => {
+        let command = '';
+        console.log("Checking for command");
+        if(input.startsWith("/name <")) {
+            if(input.endsWith(">")) {
+                command += 'nameChange';
+            }
+        } else if(input.startsWith("/color ")) {
+            console.log("command starts with color");
+            //command must be in form "/color ffffff"
+            if(input.length === 13) {
+                console.log("color command correct length");
+                let color = input.substring(7);
+                var hexRegEx = new RegExp('^[0-9A-Fa-f]+$');
+                if(hexRegEx.test(color)) {
+                    command += 'colorChange';
+                } else {
+                    alert("Invalid color, must be in form RRGGBB with valid hex values only");
                 }
             }
-            if(attemptedNameChange) {
-                this.props.onMessageSend(desiredUsername, attemptedNameChange);
+        }
+        return command;
+    }
+
+    handleSendMessage = () => {
+        if (this.state.enteredMessage && this.state.enteredMessage != '') {
+            let input = this.state.enteredMessage.trim();
+            var command = this.checkForCommand(input);
+            if(command === "nameChange") {
+                console.log("attempting to change username");
+                let desiredUsername = input.substring(
+                    (input.indexOf("<") + 1),
+                    (input.indexOf(">"))
+                );
+                this.props.onMessageSend(desiredUsername, command);
+            } else if(command === "colorChange"){
+                let color = input.substring(7);
+                this.props.onMessageSend(color, command);
             } else {
-                this.props.onMessageSend(this.state.enteredMessage, attemptedNameChange);
+                this.props.onMessageSend(this.state.enteredMessage, command);
             }
+            
             this.setState({ enteredMessage: '' });
         }
     }

@@ -17,7 +17,8 @@ class App extends React.Component {
     messages: [],
     currentUsers: [],
     socketId: '',
-    username: ''
+    username: '',
+    color: ''
   }
   
   socket;
@@ -79,13 +80,15 @@ class App extends React.Component {
     this.setState({currentUsers: clientList});
   }
 
-  handleMessageSend = (messageVal, changeUsernameFlag) => {
+  handleMessageSend = (messageVal, command) => {
     let user = this.socket.id;
-    if(changeUsernameFlag) {
+    if(command === "nameChange") {
       console.log("Attempting to change username to: " + messageVal);
       this.socket.emit('username-change-request', {messageVal, user});
+    } else if (command === "colorChange") {
+      console.log("Attempting to change color change to: " + messageVal);
+      this.setState({color: messageVal});
     } else {
-      console.log("Attempting to send message: " + messageVal);
       this.socket.emit('send-message', {messageVal, user});
     }
   }
@@ -109,27 +112,39 @@ class App extends React.Component {
     }
     let sockId = this.state.socketId;
     let activeUsers = this.state.currentUsers;
+    let userColor = this.state.color;
+    let colorStyle;
+    if(userColor === '') {
+      colorStyle = { color: "#000000" };
+    } else {
+      colorStyle = { color: "#" + userColor};
+    }
     return (
       <Container id="chat-container"> 
         <div id="messages-container">
-          <h6 id="display-username"> Your username is: {user}</h6>
+          {(userColor === '')
+          ? <h6 id="display-username"> Your username is: {user}</h6>
+          :<h6 id="display-username" style={colorStyle}> Your username is: {user}</h6>
+          }
           <ListGroup>
             {messages.map(message => (
               (message.username === sockId || message.username === sockId)
-              ? <ListGroupItem><b> <Message timestamp={message.time} username={message.username} text={message.text}/> </b> </ListGroupItem>
-              : <ListGroupItem><Message timestamp={message.time} username={message.username} text={message.text}/> </ListGroupItem>        
+              ? <ListGroupItem><b> <Message color={colorStyle} timestamp={message.time} username={message.username} text={message.text}/> </b> </ListGroupItem>
+              : <ListGroupItem><Message color={colorStyle} timestamp={message.time} username={message.username} text={message.text}/> </ListGroupItem>        
             ))}
             <div ref={this.messagesEndRef}/>
           </ListGroup>
           <MessageForm onMessageSend={this.handleMessageSend}/>
         </div>
         <div id="active-users-container">
-          <h6> Online users: </h6>
-            {activeUsers.map(client => (
-              (client.name === '') 
-              ? <div>{client.id}<br/></div>
-              : <div>{client.name}<br/></div>
-            ))}
+          <h6 id="online-users-title"> Online users: </h6>
+            <ListGroup className="active-users-list">
+              {activeUsers.map(client => (
+                (client.name === '') 
+                ? <ListGroupItem className="active-users-list-item"><div>{client.id}<br/></div> </ListGroupItem>
+                : <ListGroupItem className="active-users-list-item"><div>{client.name}<br/></div> </ListGroupItem>
+              ))}
+            </ListGroup>
         </div>     
       </Container>
     );
