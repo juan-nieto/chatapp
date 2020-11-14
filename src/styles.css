@@ -16,7 +16,6 @@
 #messages-container {
     width: 70%;
     max-width: 70%;
-    padding-top: 15px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -25,7 +24,6 @@
 #active-users-container {
     background-color: lightgray;
     width: 30%;
-    padding: 15px 10px;
 }
 
 .message-form-input {
@@ -62,15 +60,42 @@
 
 #display-username{
     flex: 0 1 auto;
-    margin-left: 10px;
+    background-color: indianred;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+#online-users-title {
+    background-color: indianred;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
 
 .list-group {
     flex: 1 1 auto !important;
-    overflow-y: scroll;
+    overflow-y: auto;
+    background: none;
+}
+
+.list-group-item {
+    border-radius: 0;
 }
 
 .list-group-item:first-child {
     margin-top: auto !important;
+}
+
+.list-group-item:nth-child(even){
+    background: darkgrey;
+}
+.list-group-item:nth-child(odd){
+    background: #d49494;
+}
+
+.active-users-list-item {
+    background: none !important;
+    border: none !important;
 }
 
