@@ -34,10 +34,7 @@ class App extends React.Component {
   }
 
   scrollToBottom = () => {
-    console.log("scrolling");
-    
-      this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-      console.log("scrolling");
+    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }
   
   setupSocket = () => {
@@ -81,7 +78,12 @@ class App extends React.Component {
   }
 
   handleMessageSend = (messageVal, command) => {
-    let user = this.socket.id;
+    let user = '';
+    if(this.state.username === '') {
+      user += this.socket.id;
+    } else {
+      user += this.state.username;
+    }
     if(command === "nameChange") {
       console.log("Attempting to change username to: " + messageVal);
       this.socket.emit('username-change-request', {messageVal, user});
@@ -128,7 +130,7 @@ class App extends React.Component {
           }
           <ListGroup>
             {messages.map(message => (
-              (message.username === sockId || message.username === sockId)
+              (message.username === sockId || message.username === username)
               ? <ListGroupItem><b> <Message color={colorStyle} timestamp={message.time} username={message.username} text={message.text}/> </b> </ListGroupItem>
               : <ListGroupItem><Message timestamp={message.time} username={message.username} text={message.text}/> </ListGroupItem>        
             ))}
